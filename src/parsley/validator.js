@@ -1,5 +1,5 @@
 define('parsley/validator', [
-    'parsley/utils'
+  'parsley/utils'
 ], function (ParsleyUtils) {
 
   var requirementConverters = {
@@ -32,20 +32,23 @@ define('parsley/validator', [
       var flags = '';
 
       // Test if RegExp is literal, if not, nothing to be done, otherwise, we need to isolate flags and pattern
-      if (!!(/^\/.*\/(?:[gimy]*)$/.test(regexp))) {
+      if (/^\/.*\/(?:[gimy]*)$/.test(regexp)) {
         // Replace the regexp literal string with the first match group: ([gimy]*)
         // If no flag is present, this will be a blank string
         flags = regexp.replace(/.*\/([gimy]*)$/, '$1');
         // Again, replace the regexp literal string with the first match group:
         // everything excluding the opening and closing slashes and the flags
         regexp = regexp.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
+      } else {
+        // Anchor regexp:
+        regexp = '^' + regexp + '$';
       }
       return new RegExp(regexp, flags);
     }
   };
 
   var convertArrayRequirement = function(string, length) {
-    var m = string.match(/^\s*\[(.*)\]\s*$/)
+    var m = string.match(/^\s*\[(.*)\]\s*$/);
     if (!m)
       throw 'Requirement is not an array: "' + string + '"';
     var values = m[1].split(',').map(ParsleyUtils.trimString);
@@ -70,7 +73,7 @@ define('parsley/validator', [
           value = convertRequirement(requirementSpec[key], value);
         extra[key] = value;
       } else {
-        main = convertRequirement(requirementSpec[key], string)
+        main = convertRequirement(requirementSpec[key], string);
       }
     }
     return [main, extra];
@@ -100,7 +103,7 @@ define('parsley/validator', [
         if (this.validateNumber) {
           if (isNaN(value))
             return false;
-          value = parseFloat(value);
+          arguments[0] = parseFloat(arguments[0]);
           return this.validateNumber.apply(this, arguments);
         }
         if (this.validateString) {
@@ -125,7 +128,7 @@ define('parsley/validator', [
           values[i] = convertRequirement(type[i], values[i]);
         return values;
       } else if ($.isPlainObject(type)) {
-        return convertExtraOptionRequirement(type, requirements, extraOptionReader)
+        return convertExtraOptionRequirement(type, requirements, extraOptionReader);
       } else {
         return [convertRequirement(type, requirements)];
       }

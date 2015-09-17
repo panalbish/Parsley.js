@@ -25,6 +25,14 @@ define('parsley/form', [
       if (true === event.parsley)
         return;
 
+      // If we didn't come here through a submit button, use the first one in the form
+      this._$submitSource = this._$submitSource || this.$element.find('input[type="submit"], button[type="submit"]').first();
+
+      if (this._$submitSource.is('[formnovalidate]')) {
+        this._$submitSource = null;
+        return;
+      }
+
       // Because some validations might be asynchroneous,
       // we cancel this submit and will fake it after validation.
       event.stopImmediatePropagation();
@@ -32,11 +40,14 @@ define('parsley/form', [
 
       this.whenValidate(undefined, undefined, event)
         .done(function() { that._submit(); })
-        .always(function() { that._submitSource = null; });
+        .always(function() { that._$submitSource = null; });
 
       return this;
     },
 
+    onSubmitButton: function(event) {
+      this._$submitSource = $(event.target);
+    },
     // internal
     // _submit submits the form, this time without going through the validations.
     // Care must be taken to "fake" the actual submit button being clicked.
@@ -44,12 +55,14 @@ define('parsley/form', [
       if (false === this._trigger('submit'))
         return;
       this.$element.find('.parsley_synthetic_submit_button').remove();
-      if (this._submitSource) {
-        $('<input class=".parsley_synthetic_submit_button" type="hidden">')
-        .attr('name', this._submitSource.name)
-        .attr('value', this._submitSource.value)
+      // Add submit button's data
+      if (this._$submitSource) {
+        $('<input class="parsley_synthetic_submit_button" type="hidden">')
+        .attr('name', this._$submitSource.attr('name'))
+        .attr('value', this._$submitSource.attr('value'))
         .appendTo(this.$element);
       }
+      //
       this.$element.trigger($.extend($.Event('submit'), { parsley: true }));
     },
 
@@ -80,10 +93,19 @@ define('parsley/form', [
             return field.whenValidate(force);
         });
       });
+
+      var rejectBasedOnValidationResult = function() {
+        var r = $.Deferred();
+        if (false === that.validationResult)
+          r.reject();
+        return r.resolve().promise();
+      };
+
       return $.when.apply($, promises)
         .done(  function() { that._trigger('success'); })
         .fail(  function() { that.validationResult = false; that._trigger('error'); })
-        .always(function() { that._trigger('validated'); });
+        .always(function() { that._trigger('validated'); })
+        .pipe(  rejectBasedOnValidationResult, rejectBasedOnValidationResult);
     },
 
     // Iterate over refreshed fields, and stop on first failure.
@@ -159,7 +181,7 @@ define('parsley/form', [
     // the method actualizeOptions on this form while `fn` is called.
     _withoutReactualizingFormOptions: function (fn) {
       var oldActualizeOptions = this.actualizeOptions;
-      this.actualizeOptions = function() { return this };
+      this.actualizeOptions = function() { return this; };
       var result = fn.call(this); // Keep the current `this`.
       this.actualizeOptions = oldActualizeOptions;
       return result;
@@ -169,8 +191,7 @@ define('parsley/form', [
     // Shortcut to trigger an event
     // Returns true iff event is not interrupted and default not prevented.
     _trigger: function (eventName) {
-      eventName = 'form:' + eventName;
-      return this.trigger.apply(this, arguments);
+      return this.trigger('form:' + eventName);
     }
 
   };

@@ -4,14 +4,18 @@ $.extend(true, window.Parsley, {
   asyncValidators: {
     'default': {
       fn: function (xhr) {
-        return 'resolved' === xhr.state();
+        // By default, only status 2xx are deemed successful.
+        // Note: we use status instead of state() because responses with status 200
+        // but invalid messages (e.g. an empty body for content type set to JSON) will
+        // result in state() === 'rejected'.
+        return xhr.status >= 200 && xhr.status < 300;
       },
       url: false
     },
     reverse: {
       fn: function (xhr) {
         // If reverse option is set, a failing ajax request is considered successful
-        return 'rejected' === xhr.state();
+        return xhr.status < 200 || xhr.status >= 300;
       },
       url: false
     }
@@ -58,20 +62,28 @@ window.Parsley.addValidator('remote', {
     if ('undefined' === typeof window.Parsley.asyncValidators[validator])
       throw new Error('Calling an undefined async validator: `' + validator + '`');
 
-    // Fill data with current value
-    data[instance.$element.attr('name') || instance.$element.attr('id')] = value;
+    url = window.Parsley.asyncValidators[validator].url || url;
+
+    // Fill current value
+    if (url.indexOf('{value}') > -1) {
+      url = url.replace('{value}', encodeURIComponent(value));
+    } else {
+      data[instance.$element.attr('name') || instance.$element.attr('id')] = value;
+    }
 
     // Merge options passed in from the function with the ones in the attribute
     var remoteOptions = $.extend(true, options.options || {} , window.Parsley.asyncValidators[validator].options);
 
     // All `$.ajax(options)` could be overridden or extended directly from DOM in `data-parsley-remote-options`
     ajaxOptions = $.extend(true, {}, {
-      url: window.Parsley.asyncValidators[validator].url || url,
+      url: url,
       data: data,
       type: 'GET'
     }, remoteOptions);
 
     // Generate store key based on ajax options
+    instance.trigger('field:ajaxoptions', instance, ajaxOptions);
+
     csr = $.param(ajaxOptions);
 
     // Initialise querry cache

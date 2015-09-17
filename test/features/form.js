@@ -92,7 +92,7 @@ define(function () {
           // group name on single required field, without value
           expect(parsleyForm.isValid('qux')).to.be(false);
       });
-      it('should handle form submission correctly', function (done) {
+      it('should handle form submission correctly', function () {
         $('body').append(
           '<form id="element">'                 +
             '<input id="field1" type="text" name="nick" data-parsley-required="true" />'  +
@@ -106,14 +106,33 @@ define(function () {
           // Form should not be submitted at this point
 
           $('#field1').val('foo');
+          var values = [];
           $('#element').on('submit', function(evt) {
-            if(evt.parsley) {
-              evt.preventDefault();
-              done();
-            }
+            expect(evt.parsley).to.be(true);
+            values.push($('form input[type!=submit][name="foo"]').val());
+            evt.preventDefault();
           });
           $('#element input:last').click();
+          $('#element').submit(); // Similar to pressing 'enter'
+          expect(values).to.eql(['other', 'bar']);
       });
+      it('should not validate when triggered by a button with formnovalidate', function () {
+        var $form = $('<form id="element"><input type="string" required /><input type="submit" formnovalidate /><form>').appendTo($('body'));
+        $form.on('submit', function (e) {
+          e.preventDefault();
+        });
+
+        var callbacks = [];
+        $.each(['validate', 'error', 'success', 'validated', 'submit'], function (i, cb) {
+          $form.parsley().on('form:' + cb, function () {
+            callbacks.push(cb);
+          });
+        });
+        $form.parsley();
+        $form.find('input[type=submit]').click();
+        expect(callbacks.join()).to.be('');
+      });
+
       it('should have a force option for validate and isValid methods', function () {
         $('body').append(
           '<form id="element">'                                   +
@@ -171,6 +190,27 @@ define(function () {
           expect(true).to.be(false);
         })
         .submit();
+      });
+
+      it('should have the validationResult be changeable', function () {
+        var submitted = false;
+        $('<form id="element"></form>')
+        .appendTo('body')
+        .parsley()
+        .on('form:success', function(form) {
+          form.validationResult = false;
+        })
+        .on('form:error', function(form) {
+          form.validationResult = true;
+        })
+        .on('form:submit', function(form) {
+          submitted = true;
+          return false;
+        });
+        $('#element').submit();
+        expect(submitted).to.be(false);
+        $('#element').append('<input required>').submit();
+        expect(submitted).to.be(true);
       });
 
       it('should fire form:submit.event and be interruptable when validated', function (done) {
