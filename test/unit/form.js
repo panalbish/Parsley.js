@@ -1,5 +1,7 @@
-define(function () {
-  return function (ParsleyForm) {
+import $ from 'jquery';
+import ParsleyForm from '../../src/parsley/form';
+import Parsley from '../../src/parsley';
+
     describe('ParsleyForm', function () {
       it('should be a function', function () {
         expect(ParsleyForm).to.be.a('function');
@@ -307,5 +309,3 @@ define(function () {
         $('#element').remove();
       });
     });
-  };
-});
