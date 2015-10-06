@@ -94,7 +94,7 @@ define('parsley/form', [
         });
       });
 
-      var rejectBasedOnValidationResult = function() {
+      var promiseBasedOnValidationResult = function() {
         var r = $.Deferred();
         if (false === that.validationResult)
           r.reject();
@@ -105,7 +105,7 @@ define('parsley/form', [
         .done(  function() { that._trigger('success'); })
         .fail(  function() { that.validationResult = false; that._trigger('error'); })
         .always(function() { that._trigger('validated'); })
-        .pipe(  rejectBasedOnValidationResult, rejectBasedOnValidationResult);
+        .pipe(  promiseBasedOnValidationResult, promiseBasedOnValidationResult);
     },
 
     // Iterate over refreshed fields, and stop on first failure.
@@ -155,7 +155,7 @@ define('parsley/form', [
         .find(this.options.inputs)
         .not(this.options.excluded)
         .each(function () {
-          var fieldInstance = new Parsley.Factory(this, {}, self);
+          var fieldInstance = new window.Parsley.Factory(this, {}, self);
 
           // Only add valid and not excluded `ParsleyField` and `ParsleyFieldMultiple` children
           if (('ParsleyField' === fieldInstance.__class__ || 'ParsleyFieldMultiple' === fieldInstance.__class__) && (true !== fieldInstance.options.excluded))
