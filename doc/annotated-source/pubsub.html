@@ -197,7 +197,7 @@
       callback = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">2</span>];
     }
 
-    <span class="hljs-keyword">if</span> (<span class="hljs-string">'function'</span> !== <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">arguments</span>[<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">'function'</span> !== <span class="hljs-keyword">typeof</span> callback)
       <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Wrong parameters'</span>);
 
     <span class="hljs-built_in">window</span>.Parsley.on(eventName(name), adapt(callback, context));

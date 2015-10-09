@@ -1,7 +1,7 @@
 /*!
 * Parsleyjs
 * Guillaume Potier - <guillaume@wisembly.com>
-* Version 2.2.0-rc2 - built Tue Oct 06 2015 10:20:13
+* Version 2.2.0-rc2 - built Fri Oct 09 2015 18:04:09
 * MIT Licensed
 *
 */
@@ -25,7 +25,7 @@
 window.ParsleyConfig = window.ParsleyConfig || {};
 window.ParsleyConfig.i18n = window.ParsleyConfig.i18n || {};
 // Define then the messages
-window.ParsleyConfig.i18n.ko = jQuery.extend(window.ParsleyConfig.i18n.ko || {}, {
+window.ParsleyConfig.i18n.ko = $.extend(window.ParsleyConfig.i18n.ko || {}, {
   defaultMessage: "입력하신 내용이 올바르지 않습니다.",
   type: {
     email:        "입력하신 이메일이 유효하지 않습니다.",

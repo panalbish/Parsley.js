@@ -287,7 +287,8 @@
       <span class="hljs-keyword">var</span> messages = [];
 
       <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; fieldInstance.validationResult.length; i++)
-        messages.push(<span class="hljs-keyword">this</span>._getErrorMessage(fieldInstance, fieldInstance.validationResult[i].assert));
+        messages.push(fieldInstance.validationResult[i].errorMessage ||
+         <span class="hljs-keyword">this</span>._getErrorMessage(fieldInstance, fieldInstance.validationResult[i].assert));
 
       <span class="hljs-keyword">return</span> messages;
     },
@@ -358,10 +359,10 @@
         <span class="hljs-keyword">this</span>.removeError(fieldInstance, diff.removed[i].assert.name, <span class="hljs-literal">true</span>);
 
       <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; diff.added.length; i++)
-        <span class="hljs-keyword">this</span>.addError(fieldInstance, diff.added[i].assert.name, <span class="hljs-literal">undefined</span>, diff.added[i].assert, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.addError(fieldInstance, diff.added[i].assert.name, diff.added[i].errorMessage, diff.added[i].assert, <span class="hljs-literal">true</span>);
 
       <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; diff.kept.length; i++)
-        <span class="hljs-keyword">this</span>.updateError(fieldInstance, diff.kept[i].assert.name, <span class="hljs-literal">undefined</span>, diff.kept[i].assert, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">this</span>.updateError(fieldInstance, diff.kept[i].assert.name, diff.kept[i].errorMessage, diff.kept[i].assert, <span class="hljs-literal">true</span>);
     },</pre></div></div>
             
         </li>
@@ -510,7 +511,8 @@ but highly improbable cuz’ manually removing a well Parsley handled error make
     },
 
     setupForm: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">formInstance</span>) </span>{
-      formInstance.$element.on(<span class="hljs-string">'submit.Parsley'</span>, <span class="hljs-literal">false</span>, $.proxy(formInstance.onSubmitValidate, formInstance));</pre></div></div>
+      formInstance.$element.on(<span class="hljs-string">'submit.Parsley'</span>, <span class="hljs-literal">false</span>, $.proxy(formInstance.onSubmitValidate, formInstance));
+      formInstance.$element.on(<span class="hljs-string">'click.Parsley'</span>, <span class="hljs-string">'input[type="submit"], button[type="submit"]'</span>, $.proxy(formInstance.onSubmitButton, formInstance));</pre></div></div>
             
         </li>
         

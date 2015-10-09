@@ -1,7 +1,7 @@
 /*!
 * Parsleyjs
 * Guillaume Potier - <guillaume@wisembly.com>
-* Version 2.2.0-rc2 - built Tue Oct 06 2015 10:20:13
+* Version 2.2.0-rc2 - built Fri Oct 09 2015 18:04:09
 * MIT Licensed
 *
 */
@@ -25,7 +25,7 @@
 window.ParsleyConfig = window.ParsleyConfig || {};
 window.ParsleyConfig.i18n = window.ParsleyConfig.i18n || {};
 // Define then the messages
-window.ParsleyConfig.i18n.fi = jQuery.extend(window.ParsleyConfig.i18n.fi || {}, {
+window.ParsleyConfig.i18n.fi = $.extend(window.ParsleyConfig.i18n.fi || {}, {
   defaultMessage: "Sy&ouml;tetty arvo on virheellinen.",
   type: {
     email:        "S&auml;hk&ouml;postiosoite on virheellinen.",

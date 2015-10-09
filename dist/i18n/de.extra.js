@@ -1,7 +1,7 @@
 /*!
 * Parsleyjs
 * Guillaume Potier - <guillaume@wisembly.com>
-* Version 2.2.0-rc2 - built Tue Oct 06 2015 10:20:13
+* Version 2.2.0-rc2 - built Fri Oct 09 2015 18:04:09
 * MIT Licensed
 *
 */
@@ -23,7 +23,7 @@
     $ = window.jQuery;
 window.ParsleyConfig = window.ParsleyConfig || {};
 window.ParsleyConfig.i18n = window.ParsleyConfig.i18n || {};
-window.ParsleyConfig.i18n.de = jQuery.extend(window.ParsleyConfig.i18n.de || {}, {
+window.ParsleyConfig.i18n.de = $.extend(window.ParsleyConfig.i18n.de || {}, {
   dateiso:  "Die Eingabe muss ein gültiges Datum sein (YYYY-MM-DD).",
   minwords: "Die Eingabe ist zu kurz. Sie muss aus %s oder mehr Wörtern bestehen.",
   maxwords: "Die Eingabe ist zu lang. Sie muss aus %s oder weniger Wörtern bestehen.",

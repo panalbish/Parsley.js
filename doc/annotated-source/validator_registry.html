@@ -371,7 +371,7 @@ excludes network &amp; broacast addresses
       <span class="hljs-keyword">if</span> (<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.catalog[locale])
         <span class="hljs-keyword">this</span>.catalog[locale] = {};
 
-      <span class="hljs-keyword">this</span>.catalog[locale][name.toLowerCase()] = message;
+      <span class="hljs-keyword">this</span>.catalog[locale][name] = message;
 
       <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
     },</pre></div></div>
@@ -394,7 +394,7 @@ excludes network &amp; broacast addresses
          en: “Hey, that’s no good”,
          fr: “Aye aye, pas bon du tout”,
        }
-   }</p>
+   })</p>
 <p>Old API was addValidator(name, function, priority)</p>
 
             </div>
@@ -405,7 +405,7 @@ excludes network &amp; broacast addresses
       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ParsleyDefaults.hasOwnProperty(name)) {
         ParsleyUtils.warn(<span class="hljs-string">'"'</span> + name + <span class="hljs-string">'" is a restricted keyword and is not a valid validator name.'</span>);
         <span class="hljs-keyword">return</span>;
-      };
+      }
       <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._setValidator.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
     },
 
@@ -446,10 +446,10 @@ excludes network &amp; broacast addresses
           fn: validator,
           priority: priority
         };
-      };
+      }
       <span class="hljs-keyword">if</span> (!validator.validate) {
         validator = <span class="hljs-keyword">new</span> ParsleyValidator(validator);
-      };
+      }
       <span class="hljs-keyword">this</span>.validators[name] = validator;
 
       <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> locale <span class="hljs-keyword">in</span> validator.messages || {})

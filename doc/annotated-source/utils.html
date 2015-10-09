@@ -128,7 +128,7 @@ returns object from dom attributes and values</p>
             
             <div class="content"><div class='highlight'><pre>    attr: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$element, namespace, obj</span>) </span>{
       <span class="hljs-keyword">var</span>
-        attribute, attributes,
+        i, attribute, attributes,
         regex = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">'^'</span> + namespace, <span class="hljs-string">'i'</span>);
 
       <span class="hljs-keyword">if</span> (<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> obj)
@@ -148,7 +148,7 @@ returns object from dom attributes and values</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> obj) {
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> obj) {
           <span class="hljs-keyword">if</span> (obj.hasOwnProperty(i))
             <span class="hljs-keyword">delete</span> obj[i];
         }
@@ -158,7 +158,7 @@ returns object from dom attributes and values</p>
         <span class="hljs-keyword">return</span> obj;
 
       attributes = $element[<span class="hljs-number">0</span>].attributes;
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = attributes.length; i--; ) {
+      <span class="hljs-keyword">for</span> (i = attributes.length; i--; ) {
         attribute = attributes[i];
 
         <span class="hljs-keyword">if</span> (attribute &amp;&amp; attribute.specified &amp;&amp; regex.test(attribute.name)) {

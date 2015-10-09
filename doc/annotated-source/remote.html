@@ -111,12 +111,6 @@
 $.extend(<span class="hljs-literal">true</span>, <span class="hljs-built_in">window</span>.Parsley, {
   asyncValidators: {
     <span class="hljs-string">'default'</span>: {
-      fn: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">xhr</span>) </span>{
-        <span class="hljs-keyword">return</span> <span class="hljs-string">'resolved'</span> === xhr.state();
-      },
-      url: <span class="hljs-literal">false</span>
-    },
-    reverse: {
       fn: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">xhr</span>) </span>{</pre></div></div>
             
         </li>
@@ -128,18 +122,41 @@ $.extend(<span class="hljs-literal">true</span>, <span class="hljs-built_in">win
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
+              <p>By default, only status 2xx are deemed successful.
+Note: we use status instead of state() because responses with status 200
+but invalid messages (e.g. an empty body for content type set to JSON) will
+result in state() === ‘rejected’.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> xhr.status &gt;= <span class="hljs-number">200</span> &amp;&amp; xhr.status &lt; <span class="hljs-number">300</span>;
+      },
+      url: <span class="hljs-literal">false</span>
+    },
+    reverse: {
+      fn: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">xhr</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
               <p>If reverse option is set, a failing ajax request is considered successful</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> <span class="hljs-string">'rejected'</span> === xhr.state();
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> xhr.status &lt; <span class="hljs-number">200</span> || xhr.status &gt;= <span class="hljs-number">300</span>;
       },
       url: <span class="hljs-literal">false</span>
     }
   },
 
   addAsyncValidator: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, fn, url, options</span>) </span>{
-    <span class="hljs-built_in">window</span>.Parsley.asyncValidators[name.toLowerCase()] = {
+    <span class="hljs-built_in">window</span>.Parsley.asyncValidators[name] = {
       fn: fn,
       url: url || <span class="hljs-literal">false</span>,
       options: options || {}
@@ -153,11 +170,11 @@ $.extend(<span class="hljs-literal">true</span>, <span class="hljs-built_in">win
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>For keyup, keypress, keydown.. events that could be a little bit obstrusive
 do not validate if val length &lt; min threshold on first validation. Once field have been validated once and info
@@ -190,22 +207,9 @@ about success or failure have been displayed, always validate with this trigger 
       validator = options.validator || (<span class="hljs-literal">true</span> === options.reverse ? <span class="hljs-string">'reverse'</span> : <span class="hljs-string">'default'</span>);
 
     <span class="hljs-keyword">if</span> (<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span>.Parsley.asyncValidators[validator])
-      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Calling an undefined async validator: `'</span> + validator + <span class="hljs-string">'`'</span>);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Fill data with current value</p>
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Calling an undefined async validator: `'</span> + validator + <span class="hljs-string">'`'</span>);
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    data[instance.$element.attr(<span class="hljs-string">'name'</span>) || instance.$element.attr(<span class="hljs-string">'id'</span>)] = value;</pre></div></div>
+    url = <span class="hljs-built_in">window</span>.Parsley.asyncValidators[validator].url || url;</pre></div></div>
             
         </li>
         
@@ -216,11 +220,15 @@ about success or failure have been displayed, always validate with this trigger 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Merge options passed in from the function with the ones in the attribute</p>
+              <p>Fill current value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> remoteOptions = $.extend(<span class="hljs-literal">true</span>, options.options || {} , <span class="hljs-built_in">window</span>.Parsley.asyncValidators[validator].options);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (url.indexOf(<span class="hljs-string">'{value}'</span>) &gt; -<span class="hljs-number">1</span>) {
+      url = url.replace(<span class="hljs-string">'{value}'</span>, <span class="hljs-built_in">encodeURIComponent</span>(value));
+    } <span class="hljs-keyword">else</span> {
+      data[instance.$element.attr(<span class="hljs-string">'name'</span>) || instance.$element.attr(<span class="hljs-string">'id'</span>)] = value;
+    }</pre></div></div>
             
         </li>
         
@@ -231,15 +239,11 @@ about success or failure have been displayed, always validate with this trigger 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>All <code>$.ajax(options)</code> could be overridden or extended directly from DOM in <code>data-parsley-remote-options</code></p>
+              <p>Merge options passed in from the function with the ones in the attribute</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    ajaxOptions = $.extend(<span class="hljs-literal">true</span>, {}, {
-      url: <span class="hljs-built_in">window</span>.Parsley.asyncValidators[validator].url || url,
-      data: data,
-      type: <span class="hljs-string">'GET'</span>
-    }, remoteOptions);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> remoteOptions = $.extend(<span class="hljs-literal">true</span>, options.options || {} , <span class="hljs-built_in">window</span>.Parsley.asyncValidators[validator].options);</pre></div></div>
             
         </li>
         
@@ -250,11 +254,15 @@ about success or failure have been displayed, always validate with this trigger 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Generate store key based on ajax options</p>
+              <p>All <code>$.ajax(options)</code> could be overridden or extended directly from DOM in <code>data-parsley-remote-options</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    csr = $.param(ajaxOptions);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    ajaxOptions = $.extend(<span class="hljs-literal">true</span>, {}, {
+      url: url,
+      data: data,
+      type: <span class="hljs-string">'GET'</span>
+    }, remoteOptions);</pre></div></div>
             
         </li>
         
@@ -264,6 +272,23 @@ about success or failure have been displayed, always validate with this trigger 
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Generate store key based on ajax options</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    instance.trigger(<span class="hljs-string">'field:ajaxoptions'</span>, instance, ajaxOptions);
+
+    csr = $.param(ajaxOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Initialise querry cache</p>
 
@@ -275,11 +300,11 @@ about success or failure have been displayed, always validate with this trigger 
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Try to retrieve stored xhr</p>
 

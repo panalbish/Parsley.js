@@ -1,7 +1,7 @@
 /*!
 * Parsleyjs
 * Guillaume Potier - <guillaume@wisembly.com>
-* Version 2.2.0-rc2 - built Tue Oct 06 2015 10:20:13
+* Version 2.2.0-rc2 - built Fri Oct 09 2015 18:04:09
 * MIT Licensed
 *
 */
@@ -23,7 +23,7 @@
     $ = window.jQuery;
 window.ParsleyConfig = window.ParsleyConfig || {};
 window.ParsleyConfig.i18n = window.ParsleyConfig.i18n || {};
-window.ParsleyConfig.i18n.ru = jQuery.extend(window.ParsleyConfig.i18n.ru || {}, {
+window.ParsleyConfig.i18n.ru = $.extend(window.ParsleyConfig.i18n.ru || {}, {
   dateiso:  "Это значение должно быть корректной датой (ГГГГ-ММ-ДД).",
   minwords: "Это значение должно содержать не менее %s слов.",
   maxwords: "Это значение должно содержать не более %s слов.",

@@ -1,7 +1,7 @@
 /*!
 * Parsleyjs
 * Guillaume Potier - <guillaume@wisembly.com>
-* Version 2.2.0-rc2 - built Tue Oct 06 2015 10:20:13
+* Version 2.2.0-rc2 - built Fri Oct 09 2015 18:04:09
 * MIT Licensed
 *
 */
@@ -25,7 +25,7 @@
 window.ParsleyConfig = window.ParsleyConfig || {};
 window.ParsleyConfig.i18n = window.ParsleyConfig.i18n || {};
 // Define then the messages
-window.ParsleyConfig.i18n.fr = jQuery.extend(window.ParsleyConfig.i18n.fr || {}, {
+window.ParsleyConfig.i18n.fr = $.extend(window.ParsleyConfig.i18n.fr || {}, {
   defaultMessage: "Cette valeur semble non valide.",
   type: {
     email:        "Cette valeur n'est pas une adresse email valide.",

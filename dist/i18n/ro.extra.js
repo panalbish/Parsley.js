@@ -1,7 +1,7 @@
 /*!
 * Parsleyjs
 * Guillaume Potier - <guillaume@wisembly.com>
-* Version 2.2.0-rc2 - built Tue Oct 06 2015 10:20:13
+* Version 2.2.0-rc2 - built Fri Oct 09 2015 18:04:09
 * MIT Licensed
 *
 */
@@ -23,7 +23,7 @@
     $ = window.jQuery;
 window.ParsleyConfig = window.ParsleyConfig || {};
 window.ParsleyConfig.i18n = window.ParsleyConfig.i18n || {};
-window.ParsleyConfig.i18n.ro = jQuery.extend(window.ParsleyConfig.i18n.ro || {}, {
+window.ParsleyConfig.i18n.ro = $.extend(window.ParsleyConfig.i18n.ro || {}, {
   dateiso:   "Trebuie să fie o dată corectă (YYYY-MM-DD).",
   minwords:  "Textul e prea scurt. Trebuie să aibă cel puțin %s cuvinte.",
   maxwords:  "Textul e prea lung. Trebuie să aibă cel mult %s cuvinte.",

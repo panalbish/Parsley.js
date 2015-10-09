@@ -103,7 +103,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <pre><code>Parsley.js 2.2.0-rc1
+              <pre><code>Parsley.js 2.2.0-rc2
 http:<span class="hljs-comment">//parsleyjs.org</span>
 (c) <span class="hljs-number">2012</span>-<span class="hljs-number">2015</span> Guillaume Potier, Wisembly
 Parsley may be freely distributed under the MIT license.
@@ -290,7 +290,12 @@ define([</pre></div></div>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-string">'i18n/en'</span>
-], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ParsleyUtils, ParsleyDefaults, ParsleyAbstract, ParsleyValidatorRegistry, ParsleyUI, ParsleyForm, ParsleyField, ParsleyMultiple, ParsleyFactory</span>) </span>{</pre></div></div>
+], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ParsleyUtils, ParsleyDefaults, ParsleyAbstract, ParsleyValidatorRegistry, ParsleyUI, ParsleyForm, ParsleyField, ParsleyMultiple, ParsleyFactory</span>) </span>{
+
+  <span class="hljs-keyword">var</span> vernums = $.fn.jquery.split(<span class="hljs-string">'.'</span>);
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">parseInt</span>(vernums[<span class="hljs-number">0</span>]) &lt;= <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">parseInt</span>(vernums[<span class="hljs-number">1</span>]) &lt; <span class="hljs-number">8</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-string">"The loaded version of jQuery is too old. Please upgrade to 1.8.x or better."</span>
+  }</pre></div></div>
             
         </li>
         
@@ -310,7 +315,7 @@ define([</pre></div></div>
       actualizeOptions: <span class="hljs-literal">null</span>,
       _resetOptions: <span class="hljs-literal">null</span>,
       Factory: ParsleyFactory,
-      version: <span class="hljs-string">'2.2.0-rc1'</span>
+      version: <span class="hljs-string">'2.2.0-rc2'</span>
     });</pre></div></div>
             
         </li>

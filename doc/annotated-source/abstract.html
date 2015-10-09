@@ -247,18 +247,18 @@ Returns false if execution was interrupted.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, target</span>) </span>{
+            <div class="content"><div class='highlight'><pre>    trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, target, extraArg</span>) </span>{
       target = target || <span class="hljs-keyword">this</span>;
       <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">this</span>._listeners &amp;&amp; <span class="hljs-keyword">this</span>._listeners[name];
       <span class="hljs-keyword">var</span> result, parentResult;
       <span class="hljs-keyword">if</span> (queue) {
         <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = queue.length; i--; ) {
-          result = queue[i].call(target, target);
+          result = queue[i].call(target, target, extraArg);
           <span class="hljs-keyword">if</span> (result === <span class="hljs-literal">false</span>) <span class="hljs-keyword">return</span> result;
         }
       }
       <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.parent) {
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.parent.trigger(name, target);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.parent.trigger(name, target, extraArg);
       }
       <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     },</pre></div></div>

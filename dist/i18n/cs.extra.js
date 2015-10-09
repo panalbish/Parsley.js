@@ -1,7 +1,7 @@
 /*!
 * Parsleyjs
 * Guillaume Potier - <guillaume@wisembly.com>
-* Version 2.2.0-rc2 - built Tue Oct 06 2015 10:20:13
+* Version 2.2.0-rc2 - built Fri Oct 09 2015 18:04:09
 * MIT Licensed
 *
 */
@@ -23,7 +23,7 @@
     $ = window.jQuery;
 window.ParsleyConfig = window.ParsleyConfig || {};
 window.ParsleyConfig.i18n = window.ParsleyConfig.i18n || {};
-window.ParsleyConfig.i18n.cs = jQuery.extend(window.ParsleyConfig.i18n.cs || {}, {
+window.ParsleyConfig.i18n.cs = $.extend(window.ParsleyConfig.i18n.cs || {}, {
   dateiso:  "Tato položka musí být datum ve formátu RRRR-MM-DD.",
   minwords: "Tato položka musí mít délku nejméně %s slov.",
   maxwords: "Tato položka musí mít délku nejvíce %s slov.",
